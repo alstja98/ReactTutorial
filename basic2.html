@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>리액트 시작 전2</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+</head>
+<body id="root">
+    <script type="text/babel">
+        'use strict';
+        // React Hooks를 사용한다? 함수 컴포넌트에서도 setState, Ref 기능을 추가해준 것
+        const GuGuDan = () => {
+            const [first, setFirst] = React.useState(Math.ceil(Math.random() * 9));
+            const [second, setSecond] = React.useState(Math.ceil(Math.random() * 9));
+            const [value, setValue] = React.useState('');
+            const [result, setResult] = React.useState('');
+            const inputRef = React.useRef(null);
+
+            const onChangeInput = (e) =>{
+                setValue(e.target.value);
+            }
+
+            const onSubmitForm = (e) =>{
+                e.preventDefault();
+                if(parseInt(value) === first * second){
+                    setResult('정답: ' + value);
+                    setFirst(Math.ceil(Math.random() * 9));
+                    setSecond(Math.ceil(Math.random() * 9));
+                    setValue('');
+                    inputRef.current.focus();
+                }else{
+                    setResult('땡');
+                    setValue('');
+                    inputRef.current.focus();
+                }
+            };
+
+            return <React.Fragment>
+            <div>{first} 곱하기 {second}는?</div>
+            <form onSubmit={onSubmitForm}>
+                <input ref={inputRef} onChange={onChangeInput} value={value}/>
+                <button>입력!</button>
+            </form>
+            <div id="result">{result}</div>
+            </React.Fragment>
+        }
+    </script>
+    <script type="text/babel">
+        // ReactDOM.render(<GuGuDan/>, document.querySelector('#root'));    React 17 버젼 코드
+        ReactDOM.createRoot(document.querySelector('#root')).render(<GuGuDan/>)  //React 18 버젼 코드
+    </script>
+</body>
+</html>  
